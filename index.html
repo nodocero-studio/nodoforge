@@ -67,7 +67,7 @@ body{
   min-height:100dvh;
   -webkit-font-smoothing:antialiased;
   overflow-x:hidden;
-  transition:background-color .28s ease, color .28s ease;
+  transition:background-color .28s ease, color .28s ease, padding-bottom .2s ease;
 }
 body.no-scroll{overflow:hidden}
 button{font-family:inherit;color:inherit}
@@ -962,7 +962,7 @@ label.lbl{
           <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
         </div>
         <h3>Gratis para siempre</h3>
-        <p>Sin suscripciones ni pagos ocultos. Financiado por anuncios ligeros y elegantes.</p>
+        <p>Sin suscripciones ni pagos ocultos. Financiado en el futuro por anuncios ligeros y elegantes.</p>
       </div>
 
       <div class="feature reveal">
@@ -1017,7 +1017,7 @@ label.lbl{
       </details>
       <details class="faq-item reveal">
         <summary>¿Necesito conexión a internet para usar la herramienta?</summary>
-        <div class="faq-a">No. La página funciona por completo sin conexión una vez cargada. No realiza peticiones a servidores externos salvo el anuncio.</div>
+        <div class="faq-a">No. La página funciona por completo sin conexión una vez cargada. No realiza peticiones a servidores externos.</div>
       </details>
       <details class="faq-item reveal">
         <summary>¿Se guardan mis nombres o mis datos?</summary>
@@ -1025,11 +1025,11 @@ label.lbl{
       </details>
       <details class="faq-item reveal">
         <summary>¿La página tiene anuncios?</summary>
-        <div class="faq-a">Sí. Para sostener el proyecto mostramos anuncios de la red A-Ads, optimizados para cargarse rápido e integrados sin interrumpir el uso de la herramienta. Puedes cerrarlos con la X. No compartimos datos propios con nadie porque no recopilamos ninguno.</div>
+        <div class="faq-a">Actualmente no. Más adelante se añadirán anuncios ligeros y optimizados al extremo para financiar el proyecto, integrados de forma elegante y sin interrumpir el uso de la herramienta. No compartimos datos propios con nadie porque no recopilamos ninguno.</div>
       </details>
       <details class="faq-item reveal">
         <summary>¿Es realmente gratis?</summary>
-        <div class="faq-a">Sí. No hay suscripciones ni compras ocultas. El proyecto se sostiene gracias a anuncios mínimos y a la comunidad.</div>
+        <div class="faq-a">Sí. No hay suscripciones ni compras ocultas. El proyecto se sostiene (o se sostendrá) gracias a anuncios mínimos y a la comunidad.</div>
       </details>
       <details class="faq-item reveal">
         <summary>¿Puedo usar estos nombres en otros juegos?</summary>
@@ -1245,31 +1245,9 @@ label.lbl{
 <!-- TOAST -->
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<!-- BEGIN AADS AD UNIT 2461427 -->
-<div style="position:absolute;z-index:50">
-  <input autocomplete="off" type="checkbox" id="aadsstickymw88m3fs" hidden />
-  <div style="padding-top:auto;padding-bottom:0">
-    <div style="width:100%;height:auto;position:fixed;text-align:center;font-size:0;bottom:0;left:0;right:0;margin:auto">
-      <label for="aadsstickymw88m3fs" aria-label="Cerrar anuncio" style="top:50%;transform:translateY(-50%);right:24px;position:absolute;border-radius:4px;background:rgba(248,248,249,0.70);padding:4px;z-index:51;cursor:pointer">
-        <svg fill="#000000" height="16px" width="16px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 490 490" aria-hidden="true">
-          <polygon points="456.851,0 245,212.564 33.149,0 0.708,32.337 212.669,245.004 0.708,457.678 33.149,490 245,277.443 456.851,490 489.292,457.678 277.331,245.004 489.292,32.337 "/>
-        </svg>
-      </label>
-      <div id="frame" style="width:100%;margin:auto;position:relative;z-index:50;">
-        <iframe data-aa="2461427" src="//acceptable.a-ads.com/2461427/?size=Adaptive" title="Publicidad" style="border:0;padding:0;width:70%;height:auto;overflow:hidden;margin:auto;display:block"></iframe>
-      </div>
-    </div>
-    <style>
-      #aadsstickymw88m3fs:checked + div { display: none; }
-      body:has(#aadsstickymw88m3fs:not(:checked)) { padding-bottom: 110px; }
-      body:has(#aadsstickymw88m3fs:not(:checked)) .toast {
-        bottom: calc(120px + env(safe-area-inset-bottom));
-      }
-    </style>
-  </div>
-</div>
-<!-- END AADS AD UNIT 2461427 -->
-
+<!-- ============================================================
+     SCRIPT PRINCIPAL (idéntico al original que funciona)
+     ============================================================ -->
 <script>
 (function(){
 "use strict";
@@ -1790,5 +1768,33 @@ doGenerate();
 
 })();
 </script>
+
+<!-- ============================================================
+     BLOQUE A-Ads (va DESPUÉS del script principal para no romperlo)
+     ============================================================ -->
+<!-- BEGIN AADS AD UNIT 2461427 -->
+<input autocomplete="off" type="checkbox" id="aadsstickymw88m3fs" hidden />
+<div id="aads-bar" style="position:fixed;left:0;right:0;bottom:0;z-index:50;text-align:center;pointer-events:none">
+  <label for="aadsstickymw88m3fs" aria-label="Cerrar anuncio" style="pointer-events:auto;position:absolute;top:-28px;right:8px;background:rgba(248,248,249,.92);border-radius:4px;padding:4px;cursor:pointer;z-index:51;line-height:0;box-shadow:0 2px 6px rgba(0,0,0,.2)">
+    <svg fill="#000" height="14" width="14" viewBox="0 0 490 490" aria-hidden="true"><polygon points="456.851,0 245,212.564 33.149,0 0.708,32.337 212.669,245.004 0.708,457.678 33.149,490 245,277.443 456.851,490 489.292,457.678 277.331,245.004 489.292,32.337"/></svg>
+  </label>
+  <iframe data-aa="2461427" src="//acceptable.a-ads.com/2461427/?size=Adaptive" title="Publicidad" style="pointer-events:auto;border:0;padding:0;width:100%;max-width:728px;height:100px;overflow:hidden;display:block;margin:0 auto;background:transparent"></iframe>
+</div>
+<style>
+  #aadsstickymw88m3fs:checked ~ #aads-bar { display: none !important; }
+  body.aads-visible { padding-bottom: 110px; }
+  body.aads-visible .toast { bottom: calc(120px + env(safe-area-inset-bottom)) !important; }
+</style>
+<script>
+  (function(){
+    var cb = document.getElementById('aadsstickymw88m3fs');
+    if (!cb) return;
+    function sync(){ document.body.classList.toggle('aads-visible', !cb.checked); }
+    cb.addEventListener('change', sync);
+    sync();
+  })();
+</script>
+<!-- END AADS AD UNIT 2461427 -->
+
 </body>
 </html>
