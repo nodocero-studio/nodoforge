@@ -43,28 +43,6 @@ html[data-theme="light"]{
 }
 
 /* ============================================================
-   ESTILOS PARA MAGIC ADS (Evita que la página se rompa)
-   ============================================================ */
-.magicads {
-  margin: 10px auto;
-  max-width: 728px;
-  width: 100%;
-  min-height: 90px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: var(--card-2);
-  border: 1px dashed var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-  position: relative;
-  z-index: 1;
-}
-.magicads:empty {
-  display: none; /* Oculta el contenedor si el anuncio no carga o está vacío */
-}
-
-/* ============================================================
    BASE
    ============================================================ */
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -732,9 +710,6 @@ label.lbl{
   </div>
 </header>
 
-<!-- MAGICADS BANNER -->
-<div class="magicads" data-placement="top-banner"></div>
-
 <!-- DRAWER -->
 <div class="drawer-overlay" id="drawerOverlay"></div>
 <aside class="drawer" id="drawer" aria-hidden="true" aria-label="Menú de navegación">
@@ -1273,7 +1248,7 @@ label.lbl{
    0. UTILIDADES
    ========================================================== */
 function $(sel, ctx){ return (ctx || document).querySelector(sel); }
-function $(sel, ctx){ return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
+function $$(sel, ctx){ return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
 function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
 function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
 
@@ -1343,7 +1318,7 @@ menuBtn.addEventListener("click", function(){
 closeDrawerBtn.addEventListener("click", closeDrawer);
 drawerOverlay.addEventListener("click", closeDrawer);
 
-$("[data-close-drawer]").forEach(function(a){
+$$("[data-close-drawer]").forEach(function(a){
   a.addEventListener("click", function(){ setTimeout(closeDrawer, 60); });
 });
 
@@ -1410,7 +1385,7 @@ document.addEventListener("keydown", function(e){
 /* ==========================================================
    5. REVEAL ON SCROLL
    ========================================================== */
-var reveals = $(".reveal");
+var reveals = $$(".reveal");
 function showReveal(el){ el.classList.add("in"); }
 
 if ("IntersectionObserver" in window){
@@ -1454,7 +1429,7 @@ function animateCount(el){
   requestAnimationFrame(step);
 }
 
-var counters = $("[data-count]");
+var counters = $$("[data-count]");
 if ("IntersectionObserver" in window){
   var cio = new IntersectionObserver(function(entries){
     entries.forEach(function(en){
