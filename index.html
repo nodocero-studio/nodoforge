@@ -641,26 +641,6 @@ label.lbl{
   .brand h1{font-size:1.22rem}
   .logo{width:44px;height:44px}
 }
-
-/* ============================================================
-   PUBLICIDAD AADS — ESPACIO RESERVADO Y COMPORTAMIENTO
-   ============================================================ */
-:root{ --ad-space: 100px; }
-
-/* Reserva espacio abajo para que el banner fijo no tape el footer */
-body{ padding-bottom: var(--ad-space); }
-
-/* El toast flota POR ENCIMA del anuncio */
-.toast{ bottom: calc(var(--ad-space) + 24px + env(safe-area-inset-bottom)); }
-
-/* Si el usuario cierra el banner (X), recuperamos el espacio */
-body.ad-closed{ padding-bottom: 0; }
-body.ad-closed .toast{ bottom: calc(24px + env(safe-area-inset-bottom)); }
-
-/* Con drawer o modal abiertos: ocultamos el anuncio y liberamos padding */
-body.no-scroll{ padding-bottom: 0; }
-body.no-scroll .ads-sticky-wrapper{ display: none !important; }
-body.no-scroll .toast{ bottom: calc(24px + env(safe-area-inset-bottom)); }
 </style>
 </head>
 <body>
@@ -977,7 +957,7 @@ body.no-scroll .toast{ bottom: calc(24px + env(safe-area-inset-bottom)); }
           <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
         </div>
         <h3>Gratis para siempre</h3>
-        <p>Sin suscripciones ni pagos ocultos. Financiado por anuncios ligeros y elegantes.</p>
+        <p>Sin suscripciones ni pagos ocultos. Se financia con anuncios discretos de terceros.</p>
       </div>
 
       <div class="feature reveal">
@@ -1032,15 +1012,15 @@ body.no-scroll .toast{ bottom: calc(24px + env(safe-area-inset-bottom)); }
       </details>
       <details class="faq-item reveal">
         <summary>¿Necesito conexión a internet para usar la herramienta?</summary>
-        <div class="faq-a">No. La página funciona por completo sin conexión una vez cargada. No realiza peticiones a servidores externos.</div>
+        <div class="faq-a">El generador funciona sin conexión una vez cargada la página: no realiza peticiones a servidores externos. Eso sí, los anuncios de terceros que aparecen en la página no se mostrarán sin internet; el generador seguirá funcionando con normalidad.</div>
       </details>
       <details class="faq-item reveal">
         <summary>¿Se guardan mis nombres o mis datos?</summary>
-        <div class="faq-a">Solo guardamos en tu propio navegador tu preferencia de tema y el último nombre escrito. Nada se envía a ningún servidor y puedes borrarlo desde los ajustes de tu navegador. Cero recopilación propia.</div>
+        <div class="faq-a">Solo guardamos en tu propio navegador tu preferencia de tema y el último nombre escrito. Nada se envía a ningún servidor propio y puedes borrarlo desde los ajustes de tu navegador. Cero recopilación propia.</div>
       </details>
       <details class="faq-item reveal">
         <summary>¿La página tiene anuncios?</summary>
-        <div class="faq-a">Sí. La página muestra anuncios ligeros y optimizados al extremo para financiar el proyecto, integrados de forma elegante para no interrumpir el uso de la herramienta. No compartimos datos propios con nadie porque no recopilamos ninguno.</div>
+        <div class="faq-a">Sí. Para financiar el proyecto mostramos anuncios servidos por <strong>Acceptable Ads (a-ads.com)</strong>, una red publicitaria externa. Se integran de forma discreta para no interrumpir el uso de la herramienta. No compartimos datos propios con nadie porque no recopilamos ninguno; el tratamiento que hagan los anunciantes se rige por sus propias políticas.</div>
       </details>
       <details class="faq-item reveal">
         <summary>¿Es realmente gratis?</summary>
@@ -1142,7 +1122,7 @@ body.no-scroll .toast{ bottom: calc(24px + env(safe-area-inset-bottom)); }
   <h3>Quién está detrás</h3>
   <p>NodoForge es un proyecto <strong>individual</strong> creado por <strong>Jesús E. Rodríguez Vázquez</strong>, desarrollador de software y programador de alto nivel, creador del canal de YouTube <strong>NodoCero</strong>. No hay equipo ni empresa detrás: es una persona con pasión por construir cosas útiles y bien hechas.</p>
   <h3>Nuestra misión</h3>
-  <p>Creemos que las mejores herramientas son las que no te piden nada a cambio. Por eso NodoForge funciona sin cuentas, sin registros y sin conexión.</p>
+  <p>Creemos que las mejores herramientas son las que no te piden nada a cambio. Por eso NodoForge funciona sin cuentas y sin registros, y se financia con anuncios discretos de terceros.</p>
   <h3>Nuestros valores</h3>
   <ul>
     <li><strong>Privacidad primero:</strong> no recopilamos datos personales.</li>
@@ -1161,7 +1141,7 @@ body.no-scroll .toast{ bottom: calc(24px + env(safe-area-inset-bottom)); }
   <h3>1. Responsable</h3>
   <p>Jesús E. Rodríguez Vázquez — <a href="mailto:rodriguezvazquezj09@gmail.com">rodriguezvazquezj09@gmail.com</a></p>
   <h3>2. Datos que recopilamos</h3>
-  <p><strong>Ninguno.</strong> La herramienta no envía datos a ningún servidor. No hay cuentas, formularios ni analítica propia.</p>
+  <p><strong>Ninguno.</strong> La herramienta no envía datos a ningún servidor propio. No hay cuentas, formularios ni analítica propia.</p>
   <h3>3. Almacenamiento local</h3>
   <p>Usamos el almacenamiento local de tu navegador (<code>localStorage</code>) únicamente para recordar:</p>
   <ul>
@@ -1170,10 +1150,10 @@ body.no-scroll .toast{ bottom: calc(24px + env(safe-area-inset-bottom)); }
   </ul>
   <p>Estos datos permanecen en tu dispositivo y puedes borrarlos en cualquier momento desde los ajustes de tu navegador.</p>
   <h3>4. Publicidad</h3>
-  <p>Para sostener el proyecto, NodoForge muestra anuncios servidos por redes publicitarias externas (a-ads.com). Dichos proveedores pueden usar cookies, identificadores o tecnologías similares para mostrar y medir anuncios personalizados. Como no recopilamos datos propios, no compartimos nada nuestro con terceros; cualquier tratamiento que hagan los anunciantes se rige por sus propias políticas.</p>
-  <p>Nuestro compromiso: los anuncios se optimizan al extremo para cargarse lo más rápido posible y mostrarse de forma elegante, sin interrumpir tu experiencia.</p>
+  <p>NodoForge muestra anuncios servidos por <strong>Acceptable Ads (a-ads.com)</strong>, una red publicitaria externa. Dichos proveedores pueden usar cookies, identificadores o tecnologías similares para mostrar y medir anuncios. Como no recopilamos datos propios, no compartimos nada nuestro con terceros; cualquier tratamiento que hagan los anunciantes se rige por sus propias políticas.</p>
+  <p>Los anuncios se integran de forma discreta para no interrumpir tu experiencia.</p>
   <h3>5. Cookies y terceros</h3>
-  <p>No utilizamos cookies propias de seguimiento. Los proveedores de anuncios pueden usar cookies de terceros. La herramienta no carga recursos externos en su funcionamiento principal salvo el propio anuncio.</p>
+  <p>No utilizamos cookies propias de seguimiento. Los proveedores de anuncios (Acceptable Ads / a-ads.com) pueden usar cookies de terceros. La herramienta no carga otros recursos externos en su funcionamiento principal.</p>
   <h3>6. Tus derechos</h3>
   <p>Como no recopilamos datos personales, no hay información que exportar o eliminar en nuestros sistemas. Para cualquier duda, contáctanos.</p>
   <h3>7. Menores</h3>
@@ -1198,9 +1178,9 @@ body.no-scroll .toast{ bottom: calc(24px + env(safe-area-inset-bottom)); }
   <h3>4. Exención de responsabilidad</h3>
   <p>No garantizamos que un nombre concreto sea aceptado por Free Fire. La compatibilidad depende de las reglas del juego, que pueden cambiar sin previo aviso.</p>
   <h3>5. Disponibilidad</h3>
-  <p>El servicio es offline y puede dejar de recibir actualizaciones en cualquier momento.</p>
+  <p>El generador funciona sin conexión y puede dejar de recibir actualizaciones en cualquier momento.</p>
   <h3>6. Publicidad</h3>
-  <p>La página muestra anuncios para financiar el proyecto. Los anuncios no condicionan el uso de la herramienta, que sigue siendo gratuita.</p>
+  <p>NodoForge se financia mediante anuncios de terceros (Acceptable Ads / a-ads.com). Los anuncios no condicionan el uso de la herramienta, que sigue siendo gratuita.</p>
   <h3>7. Modificaciones</h3>
   <p>Podemos actualizar estos términos. El uso continuado implica aceptación.</p>
   <h3>8. Legislación aplicable</h3>
@@ -1230,7 +1210,7 @@ body.no-scroll .toast{ bottom: calc(24px + env(safe-area-inset-bottom)); }
 
 <div id="doc-cookies" hidden data-title="Política de Cookies">
   <h3>¿Qué son las cookies?</h3>
-  <p>Pequeños archivos que un sitio guarda en tu navegador. NodoForge no usa cookies propias de seguimiento.</p>
+  <p>Pequeños archivos que un sitio guarda en tu navegador. NodoForge no usa cookies propias de seguimiento; sí puede haber cookies de terceros asociadas a la publicidad.</p>
   <h3>Qué almacenamos</h3>
   <p>Únicamente almacenamiento técnico local (<code>localStorage</code>):</p>
   <ul>
@@ -1238,9 +1218,9 @@ body.no-scroll .toast{ bottom: calc(24px + env(safe-area-inset-bottom)); }
     <li><code>nodoforge.name</code> — último nombre escrito.</li>
   </ul>
   <h3>Cookies de terceros</h3>
-  <p>Los proveedores de anuncios (a-ads.com) pueden usar cookies de terceros para mostrar y medir anuncios. Cualquier tratamiento que hagan los anunciantes se rige por sus propias políticas.</p>
+  <p>NodoForge muestra anuncios servidos por <strong>Acceptable Ads (a-ads.com)</strong>, que pueden usar cookies o tecnologías similares para mostrar y medir anuncios. Consulta la política de privacidad de dicho proveedor para más información.</p>
   <h3>Cómo eliminarlas</h3>
-  <p>Puedes borrar el almacenamiento local desde los ajustes de tu navegador. La herramienta seguirá funcionando con normalidad.</p>
+  <p>Puedes borrar el almacenamiento local y las cookies desde los ajustes de tu navegador. La herramienta seguirá funcionando con normalidad.</p>
   <p class="doc-meta">Última actualización: noviembre de 2026.</p>
 </div>
 
@@ -1778,24 +1758,14 @@ var savedName = lsGet(LS_NAME);
 input.value = (savedName && savedName.trim()) ? savedName : "Sniper";
 doGenerate();
 
-/* ==========================================================
-   12. BANNER PUBLICITARIO — DETECCIÓN DE CIERRE
-   ========================================================== */
-var adCheckbox = document.getElementById("aadsstickymw894dvn");
-if (adCheckbox){
-  adCheckbox.addEventListener("change", function(){
-    document.body.classList.toggle("ad-closed", this.checked);
-  });
-}
-
 })();
 </script>
 
 <!-- BEGIN AADS AD UNIT 2461428 -->
 
-<div class="ads-sticky-wrapper" style="position: absolute; z-index: 99999">
+<div style="position: absolute; z-index: 99999">
       <input autocomplete="off" type="checkbox" id="aadsstickymw894dvn" hidden />
-      <div style="padding-top: 0;">
+      <div style="padding-top: 0; padding-bottom: auto;">
         <div style="width:100%;height:auto;position:fixed;text-align:center;font-size:0;bottom:0;left:0;right:0;margin:auto">
           <label for="aadsstickymw894dvn" style="top: 50%;transform: translateY(-50%);right:24px;; position: absolute;border-radius: 4px; background: rgba(248, 248, 249, 0.70); padding: 4px;z-index: 99999;cursor:pointer">
             <svg fill="#000000" height="16px" width="16px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 490 490">
@@ -1812,6 +1782,6 @@ if (adCheckbox){
     </div></div>
 
 <!-- END AADS AD UNIT 2461428 -->
-
+      
 </body>
 </html>
