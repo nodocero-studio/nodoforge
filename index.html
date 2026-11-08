@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0e14">
+<meta name="description" content="NodoForge · Forjador Épico de Nombres para Free Fire. Herramienta 100% offline, sin registros, segura y gratuita. Desarrollada por Jesús E. Rodríguez Vázquez.">
+<meta name="author" content="Jesús E. Rodríguez Vázquez">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>NodoForge · Forjador Épico de Nombres · NodoCero</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M26 6 12 26h8l-2 16 16-22h-8z' fill='%23ff6a00'/%3E%3C/svg%3E">
+<style>
+/* ============================================================
+   TEMAS Y TOKENS
+   ============================================================ */
+:root{
+  --bg:#0b0e14;
+  --card:#151a26;
+  --card-2:#1b2130;
+  --border:#242c3d;
+  --text:#eef2ff;
+  --muted:#8b93a7;
+  --accent:#ff7a18;
+  --accent-2:#ff2d55;
+  --accent-3:#ffb020;
+  --topbar:rgba(11,14,20,.82);
+  --shadow:0 12px 32px rgba(0,0,0,.45);
+  --ok:#22c55e;
+  --yt:#ff0033;
+  color-scheme: dark;
+}
+html[data-theme="light"]{
+  --bg:#eef1f8;
+  --card:#ffffff;
+  --card-2:#f4f6fb;
+  --border:#dfe4ef;
+  --text:#101426;
+  --muted:#5b6478;
+  --topbar:rgba(238,241,248,.86);
+  --shadow:0 12px 30px rgba(20,30,60,.10);
+  color-scheme: light;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+html{
+  -webkit-text-size-adjust:100%;
+  scroll-behavior:smooth;
+  scroll-padding-top:84px;
+}
+body{
+  font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans CJK JP",sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(120% 55% at 50% -8%, rgba(255,106,0,.16), transparent 62%),
+    radial-gradient(90% 45% at 90% 110%, rgba(255,45,85,.10), transparent 60%),
+    var(--bg);
+  min-height:100dvh;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  transition:background-color .28s ease, color .28s ease;
+}
+body.no-scroll{overflow:hidden}
+button{font-family:inherit;color:inherit}
+a{color:inherit}
+img,svg{display:block;max-width:100%}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+}
+
+/* ============================================================
+   FONDO DECORATIVO GLOBAL
+   ============================================================ */
+.bg-deco{
+  position:fixed;inset:0;width:100%;height:100%;
+  z-index:0;pointer-events:none;
+  color:var(--border);
+  opacity:.7;
+}
+
+/* ============================================================
+   TOPBAR
+   ============================================================ */
+.topbar{
+  position:sticky;top:0;z-index:40;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:12px 14px;
+  padding-top:calc(12px + env(safe-area-inset-top));
+  background:var(--topbar);
+  -webkit-backdrop-filter:blur(14px);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+}
+.brand{display:flex;align-items:center;gap:10px;min-width:0;text-decoration:none}
+.logo{width:38px;height:38px;flex:0 0 auto;filter:drop-shadow(0 4px 10px rgba(255,106,0,.35))}
+.brand h1{
+  margin:0;font-size:1.02rem;letter-spacing:.2px;line-height:1.15;
+  background:linear-gradient(90deg,var(--accent-3),var(--accent) 45%,var(--accent-2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  white-space:nowrap;
+}
+.brand p{margin:2px 0 0;font-size:.66rem;color:var(--muted);letter-spacing:.6px;text-transform:uppercase;font-weight:700}
+.topbar-actions{display:flex;align-items:center;gap:8px}
+.icon-btn{
+  flex:0 0 auto;
+  width:42px;height:42px;display:grid;place-items:center;
+  border-radius:12px;border:1px solid var(--border);
+  background:var(--card);color:var(--text);
+  cursor:pointer;transition:transform .15s,border-color .2s,background .2s;
+}
+.icon-btn:active{transform:scale(.92)}
+.icon-btn:hover{border-color:var(--accent)}
+html[data-theme="dark"] .i-sun{display:block}
+html[data-theme="dark"] .i-moon{display:none}
+html[data-theme="light"] .i-sun{display:none}
+html[data-theme="light"] .i-moon{display:block}
+
+.topbar-yt{display:none}
+@media (min-width:720px){
+  .topbar-yt{
+    display:inline-flex;align-items:center;gap:7px;
+    padding:9px 14px;border-radius:11px;
+    background:var(--yt);color:#fff;text-decoration:none;
+    font-weight:800;font-size:.8rem;
+    box-shadow:0 6px 18px rgba(255,0,51,.28);
+    transition:filter .2s,transform .12s;
+  }
+  .topbar-yt:hover{filter:brightness(1.08)}
+  .topbar-yt:active{transform:scale(.96)}
+}
+
+/* ============================================================
+   DRAWER DE NAVEGACIÓN
+   ============================================================ */
+.drawer-overlay{
+  position:fixed;inset:0;z-index:79;
+  background:rgba(0,0,0,.55);
+  -webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);
+  opacity:0;pointer-events:none;transition:opacity .3s ease;
+}
+.drawer-overlay.open{opacity:1;pointer-events:auto}
+.drawer{
+  position:fixed;top:0;right:0;bottom:0;z-index:80;
+  width:min(340px,88vw);
+  display:flex;flex-direction:column;
+  background:var(--card);
+  border-left:1px solid var(--border);
+  padding:calc(14px + env(safe-area-inset-top)) 18px calc(20px + env(safe-area-inset-bottom));
+  overflow-y:auto;
+  transform:translateX(105%);
+  transition:transform .32s cubic-bezier(.4,0,.2,1);
+  box-shadow:-20px 0 60px rgba(0,0,0,.35);
+}
+.drawer.open{transform:none}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.drawer-head .brand h1{font-size:.98rem}
+.drawer-nav{display:grid;gap:2px}
+.drawer-nav a,.drawer-nav button{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 12px;border-radius:10px;
+  border:0;background:none;width:100%;text-align:left;
+  font-size:.92rem;font-weight:600;color:var(--text);
+  text-decoration:none;cursor:pointer;
+  transition:background .18s,color .18s;
+}
+.drawer-nav a:hover,.drawer-nav button:hover{background:var(--card-2);color:var(--accent)}
+.drawer-nav svg{color:var(--muted);flex:0 0 auto}
+.drawer-sep{height:1px;background:var(--border);margin:16px 0}
+.drawer-label{font-size:.68rem;font-weight:800;letter-spacing:1.1px;text-transform:uppercase;color:var(--muted);padding:0 12px;margin-bottom:6px}
+.drawer-foot{margin-top:auto;padding-top:20px}
+.drawer-foot .btn-yt{width:100%}
+
+/* ============================================================
+   BOTONES GENERALES
+   ============================================================ */
+.btn-yt{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:13px 20px;border-radius:12px;
+  background:var(--yt);color:#fff;border:0;text-decoration:none;
+  font-weight:800;font-size:.92rem;letter-spacing:.2px;
+  cursor:pointer;
+  box-shadow:0 8px 22px rgba(255,0,51,.28);
+  transition:transform .12s,filter .2s;
+}
+.btn-yt:hover{filter:brightness(1.08)}
+.btn-yt:active{transform:scale(.97)}
+
+/* ============================================================
+   HERO / BANNER
+   ============================================================ */
+.hero{
+  position:relative;overflow:hidden;isolation:isolate;
+  padding:44px 18px 52px;
+  text-align:center;
+  border-bottom:1px solid var(--border);
+}
+.hero-deco{
+  position:absolute;inset:0;width:100%;height:100%;
+  z-index:-1;pointer-events:none;
+}
+.hero-inner{max-width:760px;margin:0 auto;position:relative;z-index:1}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:6px 13px;border-radius:999px;
+  background:rgba(255,122,24,.14);
+  border:1px solid rgba(255,122,24,.4);
+  color:var(--accent);
+  font-size:.7rem;font-weight:800;letter-spacing:.9px;text-transform:uppercase;
+  margin-bottom:18px;
+}
+.hero-badge .dot{
+  width:6px;height:6px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 0 3px rgba(255,122,24,.25);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 0 3px rgba(255,122,24,.25)}
+  50%{box-shadow:0 0 0 6px rgba(255,122,24,.08)}
+}
+.hero h1{
+  margin:0 0 14px;
+  font-size:clamp(1.9rem,7.5vw,3.2rem);
+  line-height:1.08;letter-spacing:-.6px;font-weight:900;
+}
+.hero h1 .grad{
+  background:linear-gradient(100deg,var(--accent-3),var(--accent) 45%,var(--accent-2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero-sub{
+  margin:0 auto 26px;max-width:580px;
+  font-size:clamp(.92rem,2.6vw,1.05rem);
+  line-height:1.6;color:var(--muted);
+}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+
+.stats{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);border-radius:16px;overflow:hidden;
+  margin-top:34px;
+}
+.stat{background:var(--card);padding:18px 12px;text-align:center}
+.stat-num{
+  font-size:1.5rem;font-weight:900;letter-spacing:-.5px;
+  background:linear-gradient(120deg,var(--accent-3),var(--accent-2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.stat-label{
+  font-size:.66rem;font-weight:800;letter-spacing:.7px;text-transform:uppercase;
+  color:var(--muted);margin-top:5px;line-height:1.3;
+}
+@media (min-width:640px){.stats{grid-template-columns:repeat(4,1fr)}}
+
+/* ============================================================
+   SECCIONES
+   ============================================================ */
+.section{max-width:980px;margin:0 auto;padding:52px 18px;position:relative;z-index:1}
+.section-head{text-align:center;max-width:620px;margin:0 auto 30px}
+.eyebrow{
+  display:block;font-size:.7rem;font-weight:800;letter-spacing:1.3px;
+  text-transform:uppercase;color:var(--accent);margin-bottom:8px;
+}
+.section-head h2{
+  margin:0 0 10px;font-size:clamp(1.35rem,4.6vw,1.9rem);
+  letter-spacing:-.4px;line-height:1.15;
+}
+.section-head p{margin:0;color:var(--muted);font-size:.92rem;line-height:1.65}
+
+/* ============================================================
+   GENERADOR (TOOL)
+   ============================================================ */
+.wrap{
+  position:relative;z-index:1;
+  max-width:860px;margin:0 auto;
+  padding:32px 16px 8px;
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:16px;
+  box-shadow:var(--shadow);
+}
+label.lbl{
+  display:block;font-size:.76rem;font-weight:800;
+  letter-spacing:.9px;text-transform:uppercase;color:var(--muted);
+  margin:0 0 8px 2px;
+}
+.field{
+  display:flex;align-items:center;gap:6px;
+  background:var(--card-2);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:4px 4px 4px 14px;
+  transition:border-color .2s,box-shadow .2s;
+}
+.field:focus-within{
+  border-color:var(--accent);
+  box-shadow:0 0 0 4px rgba(255,122,24,.16);
+}
+.field input{
+  flex:1;min-width:0;
+  background:transparent;border:0;outline:0;
+  color:var(--text);
+  font-size:16px;font-family:inherit;font-weight:600;
+  padding:12px 0;letter-spacing:.5px;
+}
+.field input::placeholder{color:var(--muted);font-weight:500;opacity:.7}
+.clear{
+  width:36px;height:36px;display:grid;place-items:center;
+  border:0;border-radius:10px;background:transparent;
+  color:var(--muted);cursor:pointer;font-size:1.3rem;line-height:1;
+  transition:background .2s,color .2s;
+}
+.clear:active{background:var(--border)}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{
+  border:1px solid var(--border);
+  background:var(--card-2);
+  color:var(--muted);
+  font-size:.78rem;font-weight:700;
+  padding:7px 12px;border-radius:999px;
+  cursor:pointer;transition:all .18s;
+}
+.chip:active{transform:scale(.94)}
+.chip:hover{border-color:var(--accent);color:var(--text)}
+
+.btn-primary{
+  width:100%;margin-top:14px;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  padding:15px 18px;
+  font-size:1rem;font-weight:800;letter-spacing:.4px;
+  color:#fff;border:0;border-radius:14px;cursor:pointer;
+  background:linear-gradient(135deg,var(--accent-3),var(--accent) 48%,var(--accent-2));
+  box-shadow:0 10px 26px rgba(255,80,40,.32);
+  transition:transform .12s ease,box-shadow .2s,filter .2s;
+}
+.btn-primary:hover{filter:brightness(1.06)}
+.btn-primary:active{transform:scale(.975);box-shadow:0 5px 14px rgba(255,80,40,.3)}
+
+.hint{margin:10px 2px 0;font-size:.74rem;color:var(--muted);line-height:1.45}
+
+.results-head{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px;margin:22px 2px 10px;
+}
+.results-head h2{
+  margin:0;font-size:.76rem;font-weight:800;
+  letter-spacing:1px;text-transform:uppercase;color:var(--muted);
+}
+.btn-ghost{
+  display:flex;align-items:center;gap:6px;
+  border:1px solid var(--border);background:var(--card);
+  color:var(--muted);font-size:.76rem;font-weight:700;
+  padding:8px 12px;border-radius:10px;cursor:pointer;
+  transition:all .18s;
+}
+.btn-ghost:active{transform:scale(.94)}
+.btn-ghost:hover{color:var(--text);border-color:var(--accent)}
+
+/* LISTA CON SCROLL INTERNO */
+.list{
+  list-style:none;margin:0;padding:0 4px 0 0;display:grid;gap:8px;
+  max-height:50vh;
+  max-height:50dvh;
+  overflow-y:auto;
+  overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:var(--border) transparent;
+}
+.list::-webkit-scrollbar{width:6px}
+.list::-webkit-scrollbar-track{background:transparent}
+.list::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.list::-webkit-scrollbar-thumb:hover{background:var(--muted)}
+
+.item{
+  display:flex;align-items:center;gap:10px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:8px 8px 8px 14px;
+  cursor:pointer;
+  transition:border-color .18s,transform .12s,background .18s;
+}
+.item:active{transform:scale(.985)}
+.item:hover{border-color:var(--accent)}
+.item .name{
+  flex:1;min-width:0;
+  font-size:1rem;font-weight:600;line-height:1.35;
+  word-break:break-word;overflow-wrap:break-word;letter-spacing:.3px;
+}
+.copy{
+  flex:0 0 auto;width:40px;height:40px;
+  display:grid;place-items:center;
+  border-radius:11px;border:1px solid var(--border);
+  background:var(--card-2);color:var(--muted);
+  cursor:pointer;transition:all .18s;
+}
+.copy:active{transform:scale(.9)}
+.copy.copied{color:var(--ok);border-color:var(--ok);background:rgba(34,197,94,.12)}
+
+.empty{display:none;text-align:center;padding:38px 20px;color:var(--muted)}
+.empty.show{display:block}
+.empty svg{opacity:.5;margin:0 auto 10px}
+.empty p{margin:0;font-size:.9rem;line-height:1.5}
+@media (min-width:720px){
+  .list{grid-template-columns:1fr 1fr;gap:10px;max-height:60dvh}
+}
+
+/* ============================================================
+   FEATURES
+   ============================================================ */
+.features-grid{display:grid;gap:12px;grid-template-columns:1fr}
+@media (min-width:560px){.features-grid{grid-template-columns:1fr 1fr}}
+@media (min-width:900px){.features-grid{grid-template-columns:repeat(3,1fr)}}
+.feature{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px;padding:20px;
+  transition:border-color .2s,transform .2s,box-shadow .2s;
+}
+.feature:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:var(--shadow)}
+.feature-icon{
+  width:44px;height:44px;border-radius:13px;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,rgba(255,176,32,.18),rgba(255,45,85,.14));
+  color:var(--accent);
+  border:1px solid var(--border);
+  margin-bottom:14px;
+}
+.feature h3{margin:0 0 7px;font-size:.98rem;letter-spacing:-.1px}
+.feature p{margin:0;font-size:.85rem;color:var(--muted);line-height:1.6}
+
+/* ============================================================
+   STEPS / CÓMO FUNCIONA
+   ============================================================ */
+.steps{display:grid;gap:12px;grid-template-columns:1fr}
+@media (min-width:700px){.steps{grid-template-columns:repeat(3,1fr)}}
+.step{
+  position:relative;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px;padding:22px 18px 18px;
+  overflow:hidden;
+  transition:border-color .2s,transform .2s;
+}
+.step:hover{border-color:var(--accent);transform:translateY(-3px)}
+.step-num{
+  position:absolute;top:-6px;right:10px;
+  font-size:3.4rem;font-weight:900;line-height:1;
+  color:var(--border);opacity:.85;user-select:none;
+}
+.step h3{margin:0 0 7px;font-size:.98rem;position:relative}
+.step p{margin:0;font-size:.85rem;color:var(--muted);line-height:1.6;position:relative}
+
+/* ============================================================
+   FAQ
+   ============================================================ */
+.faq-list{max-width:760px;margin:0 auto;display:grid;gap:10px}
+.faq-item{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;overflow:hidden;
+  transition:border-color .2s;
+}
+.faq-item[open]{border-color:rgba(255,122,24,.5)}
+.faq-item summary{
+  padding:16px 18px;cursor:pointer;
+  font-weight:700;font-size:.92rem;
+  list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;
+}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{
+  content:"+";font-size:1.4rem;line-height:1;color:var(--accent);
+  transition:transform .25s;flex:0 0 auto;
+}
+.faq-item[open] summary::after{transform:rotate(45deg)}
+.faq-a{padding:0 18px 17px;color:var(--muted);font-size:.88rem;line-height:1.65}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer{
+  border-top:1px solid var(--border);
+  background:var(--card);
+  position:relative;z-index:1;
+  margin-top:10px;
+}
+.footer-inner{
+  max-width:980px;margin:0 auto;
+  padding:44px 18px calc(26px + env(safe-area-inset-bottom));
+}
+.footer-grid{display:grid;gap:28px;grid-template-columns:1fr}
+@media (min-width:620px){.footer-grid{grid-template-columns:1.5fr 1fr 1fr}}
+@media (min-width:920px){.footer-grid{grid-template-columns:1.7fr 1fr 1fr 1fr}}
+.footer-brand .brand{margin-bottom:12px}
+.footer-brand p{
+  margin:0 0 16px;font-size:.84rem;color:var(--muted);line-height:1.65;max-width:320px;
+}
+.footer-col h4{
+  margin:0 0 13px;font-size:.7rem;text-transform:uppercase;
+  letter-spacing:1.1px;color:var(--muted);font-weight:800;
+}
+.footer-col ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.footer-col a,.footer-col button{
+  background:none;border:0;padding:0;
+  color:var(--text);font-size:.86rem;cursor:pointer;
+  text-align:left;text-decoration:none;line-height:1.4;
+  transition:color .2s;
+}
+.footer-col a:hover,.footer-col button:hover{color:var(--accent)}
+.footer-bottom{
+  margin-top:34px;padding-top:18px;border-top:1px solid var(--border);
+  display:flex;flex-direction:column;gap:7px;
+  font-size:.76rem;color:var(--muted);line-height:1.5;
+}
+@media (min-width:700px){
+  .footer-bottom{flex-direction:row;justify-content:space-between;align-items:center;gap:20px}
+}
+.footer-bottom strong{color:var(--text)}
+
+/* ============================================================
+   MODALES
+   ============================================================ */
+.modal-overlay{
+  position:fixed;inset:0;z-index:100;
+  background:rgba(0,0,0,.62);
+  -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
+  display:grid;place-items:center;
+  padding:16px;
+  opacity:0;pointer-events:none;
+  transition:opacity .25s ease;
+}
+.modal-overlay.open{opacity:1;pointer-events:auto}
+.modal{
+  width:min(680px,100%);
+  max-height:min(86dvh,760px);
+  display:flex;flex-direction:column;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 30px 80px rgba(0,0,0,.5);
+  transform:translateY(16px) scale(.985);
+  transition:transform .28s cubic-bezier(.4,0,.2,1);
+}
+.modal-overlay.open .modal{transform:none}
+.modal-head{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:16px 18px;
+  border-bottom:1px solid var(--border);
+  background:var(--card);
+}
+.modal-head h2{
+  margin:0;font-size:1.06rem;letter-spacing:-.2px;
+  background:linear-gradient(90deg,var(--accent-3),var(--accent-2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.modal-close{
+  width:36px;height:36px;flex:0 0 auto;
+  display:grid;place-items:center;
+  border-radius:10px;border:1px solid var(--border);
+  background:var(--card-2);color:var(--muted);
+  font-size:1.4rem;line-height:1;cursor:pointer;
+  transition:all .18s;
+}
+.modal-close:hover{color:var(--text);border-color:var(--accent)}
+.modal-body{
+  padding:20px 18px 24px;
+  overflow-y:auto;-webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+}
+.modal-body h3{
+  margin:20px 0 7px;font-size:.92rem;letter-spacing:-.1px;
+  color:var(--text);
+}
+.modal-body h3:first-child{margin-top:0}
+.modal-body p{
+  margin:0 0 11px;font-size:.88rem;line-height:1.7;color:var(--text);
+}
+.modal-body ul{
+  margin:0 0 13px;padding-left:20px;
+  font-size:.88rem;line-height:1.7;
+}
+.modal-body li{margin-bottom:5px}
+.modal-body a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+.modal-body code{
+  background:var(--card-2);border:1px solid var(--border);
+  padding:1px 6px;border-radius:5px;font-size:.82em;
+}
+.doc-meta{
+  font-size:.76rem;color:var(--muted);
+  margin-top:22px;padding-top:14px;
+  border-top:1px solid var(--border);
+}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+.toast{
+  position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));
+  transform:translate(-50%,22px);
+  opacity:0;pointer-events:none;z-index:120;
+  background:var(--text);color:var(--bg);
+  padding:11px 20px;border-radius:999px;
+  font-size:.86rem;font-weight:800;
+  box-shadow:0 10px 28px rgba(0,0,0,.35);
+  transition:opacity .25s ease,transform .25s ease;
+  max-width:88vw;text-align:center;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ============================================================
+   REVEAL
+   ============================================================ */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.3,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* ============================================================
+   RESPONSIVE GLOBAL
+   ============================================================ */
+@media (min-width:720px){
+  .brand h1{font-size:1.12rem}
+  .wrap{padding:54px 24px 10px}
+  .card{padding:22px}
+  .section{padding:64px 24px}
+  .hero{padding:64px 24px 72px}
+}
+@media (min-width:1080px){
+  .brand h1{font-size:1.22rem}
+  .logo{width:44px;height:44px}
+}
+</style>
+</head>
+<body>
+
+<!-- FONDO DECORATIVO -->
+<svg class="bg-deco" aria-hidden="true" viewBox="0 0 400 800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <pattern id="grid" width="42" height="42" patternUnits="userSpaceOnUse">
+      <path d="M42 0H0v42" fill="none" stroke="currentColor" stroke-width="1"/>
+    </pattern>
+    <radialGradient id="glow" cx="50%" cy="0%" r="75%">
+      <stop offset="0%" stop-color="#ff6a00" stop-opacity=".2"/>
+      <stop offset="100%" stop-color="#ff6a00" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#grid)" opacity=".35"/>
+  <rect width="100%" height="100%" fill="url(#glow)"/>
+</svg>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <a class="brand" href="#hero" aria-label="NodoForge · Inicio">
+    <svg class="logo" viewBox="0 0 48 48" aria-hidden="true">
+      <defs>
+        <linearGradient id="lgLogo" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#ffb020"/>
+          <stop offset="55%" stop-color="#ff6a00"/>
+          <stop offset="100%" stop-color="#ff2d55"/>
+        </linearGradient>
+      </defs>
+      <path d="M24 2.5 42.5 13v22L24 45.5 5.5 35V13z" fill="none" stroke="url(#lgLogo)"
+            stroke-width="2.4" stroke-linejoin="round" opacity=".85"/>
+      <path d="M27 11 15.5 26.5H22l-1.5 11L32.5 20H26z" fill="url(#lgLogo)"/>
+    </svg>
+    <div>
+      <h1>NodoForge</h1>
+      <p>by NodoCero</p>
+    </div>
+  </a>
+
+  <div class="topbar-actions">
+    <a class="topbar-yt" href="https://youtube.com/@nodocero.official" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" fill-rule="evenodd" aria-hidden="true">
+        <path d="M23.5 7.2a3 3 0 0 0-2.1-2.1C19.5 4.6 12 4.6 12 4.6s-7.5 0-9.4.5A3 3 0 0 0 .5 7.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-4.8zM9.6 15.6V8.4l6.3 3.6z"/>
+      </svg>
+      YouTube
+    </a>
+
+    <button id="themeBtn" class="icon-btn" type="button" aria-label="Cambiar tema" title="Cambiar tema">
+      <svg class="i-sun" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="4.2"/>
+        <path d="M12 2.2v2.2M12 19.6v2.2M4.4 4.4l1.6 1.6M18 18l1.6 1.6M2.2 12h2.2M19.6 12h2.2M4.4 19.6l1.6-1.6M18 6l1.6-1.6"/>
+      </svg>
+      <svg class="i-moon" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20.8 13.2A8.7 8.7 0 1 1 10.8 3.2a6.9 6.9 0 0 0 10 10z"/>
+      </svg>
+    </button>
+
+    <button id="menuBtn" class="icon-btn" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="drawer">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+           stroke-width="2.2" stroke-linecap="round">
+        <path d="M4 7h16M4 12h16M4 17h16"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<!-- DRAWER -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<aside class="drawer" id="drawer" aria-hidden="true" aria-label="Menú de navegación">
+  <div class="drawer-head">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 48 48" aria-hidden="true">
+        <path d="M24 2.5 42.5 13v22L24 45.5 5.5 35V13z" fill="none" stroke="url(#lgLogo)"
+              stroke-width="2.4" stroke-linejoin="round" opacity=".85"/>
+        <path d="M27 11 15.5 26.5H22l-1.5 11L32.5 20H26z" fill="url(#lgLogo)"/>
+      </svg>
+      <div>
+        <h1>NodoForge</h1>
+        <p>by NodoCero</p>
+      </div>
+    </div>
+    <button id="closeDrawer" class="icon-btn" type="button" aria-label="Cerrar menú">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+           stroke-width="2.2" stroke-linecap="round">
+        <path d="M6 6l12 12M18 6L6 18"/>
+      </svg>
+    </button>
+  </div>
+
+  <p class="drawer-label">Navegación</p>
+  <nav class="drawer-nav">
+    <a href="#hero" data-close-drawer>
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+      Inicio
+    </a>
+    <a href="#tool" data-close-drawer>
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.6 13.9 8.3 19.6 10.2 13.9 12.1 12 17.8 10.1 12.1 4.4 10.2 10.1 8.3z"/></svg>
+      Generador
+    </a>
+    <a href="#features" data-close-drawer>
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 17.3 5.9 20.4l1.5-6.8L2.2 9l6.9-.7z"/></svg>
+      Características
+    </a>
+    <a href="#how" data-close-drawer>
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      Cómo funciona
+    </a>
+    <a href="#faq" data-close-drawer>
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.8 2.2c-.8.5-1.3 1-1.3 2"/><path d="M12 17h.01"/></svg>
+      Preguntas frecuentes
+    </a>
+  </nav>
+
+  <div class="drawer-sep"></div>
+  <p class="drawer-label">Compañía y legal</p>
+  <nav class="drawer-nav">
+    <button type="button" data-modal="about">Acerca de</button>
+    <button type="button" data-modal="privacy">Política de Privacidad</button>
+    <button type="button" data-modal="terms">Términos de Uso</button>
+    <button type="button" data-modal="legal">Aviso Legal</button>
+    <button type="button" data-modal="cookies">Política de Cookies</button>
+    <button type="button" data-modal="contact">Contacto</button>
+  </nav>
+
+  <div class="drawer-foot">
+    <a class="btn-yt" href="https://youtube.com/@nodocero.official" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor" fill-rule="evenodd" aria-hidden="true">
+        <path d="M23.5 7.2a3 3 0 0 0-2.1-2.1C19.5 4.6 12 4.6 12 4.6s-7.5 0-9.4.5A3 3 0 0 0 .5 7.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-4.8zM9.6 15.6V8.4l6.3 3.6z"/>
+      </svg>
+      Síguenos en YouTube
+    </a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <svg class="hero-deco" viewBox="0 0 800 420" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <radialGradient id="hg1" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#ff6a00" stop-opacity=".35"/>
+          <stop offset="100%" stop-color="#ff6a00" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="hg2" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#ff2d55" stop-opacity=".28"/>
+          <stop offset="100%" stop-color="#ff2d55" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="hs" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#ffb020"/>
+          <stop offset="100%" stop-color="#ff2d55"/>
+        </linearGradient>
+      </defs>
+      <circle cx="120" cy="90" r="170" fill="url(#hg1)"/>
+      <circle cx="700" cy="330" r="180" fill="url(#hg2)"/>
+      <g fill="none" stroke="url(#hs)" stroke-width="1.2" opacity=".35">
+        <circle cx="140" cy="110" r="58"/>
+        <circle cx="140" cy="110" r="86"/>
+        <circle cx="680" cy="320" r="64"/>
+        <circle cx="680" cy="320" r="94"/>
+      </g>
+      <g fill="url(#hs)" opacity=".55">
+        <path d="M300 60l7 16 16 3-12 11 3 17-14-8-14 8 3-17-12-11 16-3z"/>
+        <path d="M620 120l5 12 12 2-9 8 2 13-10-6-11 6 2-13-9-8 13-2z"/>
+      </g>
+    </svg>
+
+    <div class="hero-inner">
+      <span class="hero-badge"><span class="dot"></span> Hecho en Cuba · 100% offline</span>
+      <h1>NodoForge · <span class="grad">Forjador Épico</span> de Nombres</h1>
+      <p class="hero-sub">
+        Genera al instante cientos de nombres con símbolos raros y decoraciones profesionales.
+        Sin registros, sin cuentas y sin conexión. Diseñado con esmero por un solo desarrollador.
+      </p>
+      <div class="hero-actions">
+        <a class="btn-primary" href="#tool" style="width:auto;padding:13px 22px;margin:0">
+          <svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true">
+            <path d="M12 2.6 13.9 8.3 19.6 10.2 13.9 12.1 12 17.8 10.1 12.1 4.4 10.2 10.1 8.3z"/>
+          </svg>
+          Generar ahora
+        </a>
+        <a class="btn-yt" href="https://youtube.com/@nodocero.official" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor" fill-rule="evenodd" aria-hidden="true">
+            <path d="M23.5 7.2a3 3 0 0 0-2.1-2.1C19.5 4.6 12 4.6 12 4.6s-7.5 0-9.4.5A3 3 0 0 0 .5 7.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-4.8zM9.6 15.6V8.4l6.3 3.6z"/>
+          </svg>
+          Síguenos en YouTube
+        </a>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-num" data-count="100" data-suffix="+">0</div>
+          <div class="stat-label">Combinaciones por nombre</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num" data-count="0" data-suffix="">0</div>
+          <div class="stat-label">Datos personales recopilados</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Funciona sin conexión</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Gratis para siempre</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GENERADOR -->
+  <section class="wrap" id="tool">
+    <div class="card">
+      <label class="lbl" for="nameInput">Escribe tu nombre</label>
+      <div class="field">
+        <input id="nameInput" type="text" placeholder="Ej: Sniper" maxlength="20"
+               autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+               enterkeyhint="go" aria-describedby="hint">
+        <button class="clear" id="clearBtn" type="button" aria-label="Borrar" title="Borrar">&times;</button>
+      </div>
+
+      <div class="chips" id="chips">
+        <button class="chip" type="button">Sniper</button>
+        <button class="chip" type="button">Ghost</button>
+        <button class="chip" type="button">Killer</button>
+        <button class="chip" type="button">Dragon</button>
+        <button class="chip" type="button">Wolf</button>
+        <button class="chip" type="button">Shadow</button>
+      </div>
+
+      <button id="genBtn" class="btn-primary" type="button">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+          <path d="M12 2.6 13.9 8.3 19.6 10.2 13.9 12.1 12 17.8 10.1 12.1 4.4 10.2 10.1 8.3z"/>
+          <path d="M18.6 15.2 19.5 17.7 22 18.6 19.5 19.5 18.6 22 17.7 19.5 15.2 18.6 17.7 17.7z" opacity=".7"/>
+        </svg>
+        Generar nombres
+      </button>
+      <p class="hint" id="hint">
+        Toca cualquier nombre para copiarlo. Símbolos compatibles con Free Fire.
+      </p>
+
+      <div class="results-head">
+        <h2 id="countLabel" aria-live="polite">0 nombres</h2>
+        <button class="btn-ghost" id="copyAllBtn" type="button">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="12" height="12" rx="2"/>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+          Copiar todos
+        </button>
+      </div>
+
+      <ul class="list" id="list"></ul>
+
+      <div class="empty" id="empty">
+        <svg viewBox="0 0 48 48" width="56" height="56" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M24 6 42 16v16L24 42 6 32V16z"/>
+          <path d="M24 20v10M24 34.5v.5"/>
+        </svg>
+        <p>Escribe un nombre y pulsa <strong>Generar</strong> para crear cientos de combinaciones épicas.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARACTERÍSTICAS -->
+  <section class="section" id="features">
+    <div class="section-head reveal">
+      <span class="eyebrow">Por qué NodoForge</span>
+      <h2>Diseñado para jugadores exigentes</h2>
+      <p>Todo lo que necesitas para destacar en Free Fire, sin sacrificar tu privacidad ni tu tiempo.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature reveal">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5a7 7 0 0 1 14 0"/><path d="M2 12.5a10 10 0 0 1 20 0"/><circle cx="12" cy="18" r="1.4"/><path d="M3 3l18 18" opacity=".55"/></svg>
+        </div>
+        <h3>100% sin conexión</h3>
+        <p>Funciona sin internet. Tus nombres siempre disponibles, incluso en modo avión.</p>
+      </div>
+
+      <div class="feature reveal">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/><circle cx="18.5" cy="17" r="2.5"/></svg>
+        </div>
+        <h3>Símbolos compatibles</h3>
+        <p>Caracteres Unicode aceptados por Free Fire: decoraciones, marcas y alfabetos alternativos.</p>
+      </div>
+
+      <div class="feature reveal">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg>
+        </div>
+        <h3>Sin registros</h3>
+        <p>No pedimos cuenta, correo ni contraseña. Abre, genera y listo.</p>
+      </div>
+
+      <div class="feature reveal">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <h3>Seguridad total</h3>
+        <p>Todo se ejecuta en tu dispositivo. No recopilamos absolutamente nada. Cero datos, cero rastreo propio.</p>
+      </div>
+
+      <div class="feature reveal">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <h3>Gratis para siempre</h3>
+        <p>Sin suscripciones ni pagos ocultos. Financiado en el futuro por anuncios ligeros y elegantes.</p>
+      </div>
+
+      <div class="feature reveal">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 5.5h2"/></svg>
+        </div>
+        <h3>Móvil primero</h3>
+        <p>Optimizado para tu teléfono y perfecto también en tablets y ordenadores.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CÓMO FUNCIONA -->
+  <section class="section" id="how">
+    <div class="section-head reveal">
+      <span class="eyebrow">Cómo funciona</span>
+      <h2>Tres pasos, cero complicaciones</h2>
+      <p>De tu idea al nombre perfecto en menos de diez segundos.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step reveal">
+        <span class="step-num">01</span>
+        <h3>Escribe tu nombre</h3>
+        <p>Introduce un apodo, tu gamertag o cualquier palabra. Hasta 20 caracteres.</p>
+      </div>
+      <div class="step reveal">
+        <span class="step-num">02</span>
+        <h3>Genera al instante</h3>
+        <p>Pulsa el botón y obtén cientos de combinaciones con símbolos épicos.</p>
+      </div>
+      <div class="step reveal">
+        <span class="step-num">03</span>
+        <h3>Copia y pega</h3>
+        <p>Toca el nombre que más te guste, pégalo en Free Fire y domina la partida.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="section-head reveal">
+      <span class="eyebrow">Preguntas frecuentes</span>
+      <h2>Todo lo que necesitas saber</h2>
+      <p>Resolvemos las dudas más habituales de nuestra comunidad.</p>
+    </div>
+
+    <div class="faq-list">
+      <details class="faq-item reveal">
+        <summary>¿Los símbolos funcionan realmente en Free Fire?</summary>
+        <div class="faq-a">Sí. Utilizamos caracteres Unicode estándar que Free Fire acepta en los campos de nombre. Aun así, las reglas del juego pueden cambiar; si un nombre concreto no se acepta, prueba con otra variante.</div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>¿Necesito conexión a internet para usar la herramienta?</summary>
+        <div class="faq-a">No. La página funciona por completo sin conexión una vez cargada. No realiza peticiones a servidores externos.</div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>¿Se guardan mis nombres o mis datos?</summary>
+        <div class="faq-a">Solo guardamos en tu propio navegador tu preferencia de tema y el último nombre escrito. Nada se envía a ningún servidor y puedes borrarlo desde los ajustes de tu navegador. Cero recopilación propia.</div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>¿La página tiene anuncios?</summary>
+        <div class="faq-a">Actualmente no. Más adelante se añadirán anuncios ligeros y optimizados al extremo para financiar el proyecto, integrados de forma elegante y sin interrumpir el uso de la herramienta. No compartimos datos propios con nadie porque no recopilamos ninguno.</div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>¿Es realmente gratis?</summary>
+        <div class="faq-a">Sí. No hay suscripciones ni compras ocultas. El proyecto se sostiene (o se sostendrá) gracias a anuncios mínimos y a la comunidad.</div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>¿Puedo usar estos nombres en otros juegos?</summary>
+        <div class="faq-a">Por supuesto. Los caracteres Unicode son estándar, así que funcionan en la mayoría de juegos y plataformas, aunque cada servicio puede tener sus propias normas.</div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>¿Por qué algunos símbolos se ven como cuadros?</summary>
+        <div class="faq-a">Depende de la fuente instalada en tu dispositivo. Algunos caracteres poco comunes pueden no estar disponibles en todas las fuentes; prueba con otra variante si eso ocurre.</div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>¿Quién desarrolla NodoForge?</summary>
+        <div class="faq-a">Jesús E. Rodríguez Vázquez, desarrollador de software y programador de alto nivel, creador del canal NodoCero. NodoForge es un proyecto individual, sin equipo, hecho con dedicación desde Cuba.</div>
+      </details>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <div class="brand">
+          <svg class="logo" viewBox="0 0 48 48" aria-hidden="true">
+            <path d="M24 2.5 42.5 13v22L24 45.5 5.5 35V13z" fill="none" stroke="url(#lgLogo)"
+                  stroke-width="2.4" stroke-linejoin="round" opacity=".85"/>
+            <path d="M27 11 15.5 26.5H22l-1.5 11L32.5 20H26z" fill="url(#lgLogo)"/>
+          </svg>
+          <div>
+            <h1 style="font-size:1rem">NodoForge</h1>
+            <p>by NodoCero</p>
+          </div>
+        </div>
+        <p>Herramientas gratuitas, ligeras y seguras para la comunidad gamer. Un proyecto individual de Jesús E. Rodríguez Vázquez, desarrollador de software de alto nivel.</p>
+        <a class="btn-yt" href="https://youtube.com/@nodocero.official" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" fill-rule="evenodd" aria-hidden="true">
+            <path d="M23.5 7.2a3 3 0 0 0-2.1-2.1C19.5 4.6 12 4.6 12 4.6s-7.5 0-9.4.5A3 3 0 0 0 .5 7.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-4.8zM9.6 15.6V8.4l6.3 3.6z"/>
+          </svg>
+          YouTube
+        </a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Herramientas</h4>
+        <ul>
+          <li><a href="#tool">Generador</a></li>
+          <li><a href="#features">Características</a></li>
+          <li><a href="#how">Cómo funciona</a></li>
+          <li><a href="#faq">Preguntas frecuentes</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Compañía</h4>
+        <ul>
+          <li><button type="button" data-modal="about">Acerca de</button></li>
+          <li><button type="button" data-modal="contact">Contacto</button></li>
+          <li><a href="https://youtube.com/@nodocero.official" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><button type="button" data-modal="legal">Aviso Legal</button></li>
+          <li><button type="button" data-modal="privacy">Privacidad</button></li>
+          <li><button type="button" data-modal="terms">Términos de Uso</button></li>
+          <li><button type="button" data-modal="cookies">Cookies</button></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 <strong>Jesús E. Rodríguez Vázquez · NodoForge</strong>. Todos los derechos reservados.</p>
+      <p>No afiliado a Garena ni a Free Fire. Marcas de sus respectivos propietarios.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-head">
+      <h2 id="modalTitle">Documento</h2>
+      <button class="modal-close" id="modalClose" type="button" aria-label="Cerrar">&times;</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- DOCUMENTOS LEGALES -->
+<div id="doc-about" hidden data-title="Acerca de NodoForge">
+  <p><strong>NodoForge</strong> es una herramienta gratuita, ligera y segura para generar nombres épicos con símbolos Unicode, pensada para la comunidad de Free Fire y otros juegos móviles.</p>
+  <h3>Quién está detrás</h3>
+  <p>NodoForge es un proyecto <strong>individual</strong> creado por <strong>Jesús E. Rodríguez Vázquez</strong>, desarrollador de software y programador de alto nivel, creador del canal de YouTube <strong>NodoCero</strong>. No hay equipo ni empresa detrás: es una persona con pasión por construir cosas útiles y bien hechas.</p>
+  <h3>Nuestra misión</h3>
+  <p>Creemos que las mejores herramientas son las que no te piden nada a cambio. Por eso NodoForge funciona sin cuentas, sin registros y sin conexión.</p>
+  <h3>Nuestros valores</h3>
+  <ul>
+    <li><strong>Privacidad primero:</strong> no recopilamos datos personales.</li>
+    <li><strong>Seguridad total:</strong> todo se ejecuta en tu dispositivo.</li>
+    <li><strong>Gratuidad real:</strong> sin muros de pago ni suscripciones.</li>
+    <li><strong>Accesibilidad:</strong> rápido, ligero y usable en cualquier dispositivo.</li>
+    <li><strong>Hecho en Cuba:</strong> con dedicación y orgullo, desde la isla.</li>
+  </ul>
+  <h3>Contacto</h3>
+  <p>¿Tienes ideas o sugerencias? Escríbenos a <a href="mailto:rodriguezvazquezj09@gmail.com">rodriguezvazquezj09@gmail.com</a>.</p>
+  <p class="doc-meta">Última actualización: noviembre de 2026.</p>
+</div>
+
+<div id="doc-privacy" hidden data-title="Política de Privacidad">
+  <p>En <strong>NodoForge</strong> nos tomamos en serio tu privacidad. Esta política explica qué información maneja la herramienta.</p>
+  <h3>1. Responsable</h3>
+  <p>Jesús E. Rodríguez Vázquez — <a href="mailto:rodriguezvazquezj09@gmail.com">rodriguezvazquezj09@gmail.com</a></p>
+  <h3>2. Datos que recopilamos</h3>
+  <p><strong>Ninguno.</strong> La herramienta no envía datos a ningún servidor. No hay cuentas, formularios ni analítica propia.</p>
+  <h3>3. Almacenamiento local</h3>
+  <p>Usamos el almacenamiento local de tu navegador (<code>localStorage</code>) únicamente para recordar:</p>
+  <ul>
+    <li>Tu preferencia de tema (oscuro o claro).</li>
+    <li>El último nombre que escribiste.</li>
+  </ul>
+  <p>Estos datos permanecen en tu dispositivo y puedes borrarlos en cualquier momento desde los ajustes de tu navegador.</p>
+  <h3>4. Publicidad (futuro)</h3>
+  <p>Actualmente NodoForge <strong>no muestra anuncios</strong>. Más adelante, para sostener el proyecto, se integrarán anuncios de redes publicitarias externas. Dichos proveedores pueden usar cookies, identificadores o tecnologías similares para mostrar anuncios personalizados. Como no recopilamos datos propios, no compartimos nada nuestro con terceros; cualquier tratamiento que hagan los anunciantes se rige por sus propias políticas.</p>
+  <p>Nuestro compromiso: los anuncios se optimizarán al extremo para cargarse lo más rápido posible y mostrarse de forma elegante, sin interrumpir tu experiencia.</p>
+  <h3>5. Cookies y terceros</h3>
+  <p>No utilizamos cookies propias de seguimiento. Los futuros proveedores de anuncios podrían usar cookies de terceros. La herramienta no carga recursos externos en su funcionamiento principal.</p>
+  <h3>6. Tus derechos</h3>
+  <p>Como no recopilamos datos personales, no hay información que exportar o eliminar en nuestros sistemas. Para cualquier duda, contáctanos.</p>
+  <h3>7. Menores</h3>
+  <p>La herramienta es apta para todos los públicos y no solicita información personal.</p>
+  <h3>8. Cambios</h3>
+  <p>Podemos actualizar esta política. La fecha de revisión aparecerá al final del documento.</p>
+  <p class="doc-meta">Última actualización: noviembre de 2026.</p>
+</div>
+
+<div id="doc-terms" hidden data-title="Términos de Uso">
+  <p>Al usar <strong>NodoForge</strong> aceptas estos términos.</p>
+  <h3>1. Servicio</h3>
+  <p>La herramienta genera combinaciones de texto con caracteres Unicode para usar como nombres. Se ofrece <strong>tal cual</strong>, sin garantías de ningún tipo.</p>
+  <h3>2. Uso permitido</h3>
+  <ul>
+    <li>Uso personal y no comercial.</li>
+    <li>No está permitido revender, redistribuir con fines lucrativos ni modificar la herramienta para fines engañosos.</li>
+    <li>No usar para suplantar identidad, acosar o violar las normas de Free Fire.</li>
+  </ul>
+  <h3>3. Propiedad intelectual</h3>
+  <p>El nombre NodoForge, el logotipo, el diseño y el código son propiedad de Jesús E. Rodríguez Vázquez. Los nombres generados a partir de tu texto son tuyos.</p>
+  <h3>4. Exención de responsabilidad</h3>
+  <p>No garantizamos que un nombre concreto sea aceptado por Free Fire. La compatibilidad depende de las reglas del juego, que pueden cambiar sin previo aviso.</p>
+  <h3>5. Disponibilidad</h3>
+  <p>El servicio es offline y puede dejar de recibir actualizaciones en cualquier momento.</p>
+  <h3>6. Publicidad</h3>
+  <p>En el futuro se podrán integrar anuncios para financiar el proyecto. Los anuncios no condicionarán el uso de la herramienta, que seguirá siendo gratuita.</p>
+  <h3>7. Modificaciones</h3>
+  <p>Podemos actualizar estos términos. El uso continuado implica aceptación.</p>
+  <h3>8. Legislación aplicable</h3>
+  <p>Estos términos se rigen por la legislación de la <strong>República de Cuba</strong>.</p>
+  <p class="doc-meta">Última actualización: noviembre de 2026.</p>
+</div>
+
+<div id="doc-legal" hidden data-title="Aviso Legal">
+  <h3>Titular</h3>
+  <p><strong>Jesús E. Rodríguez Vázquez</strong> — Desarrollador de software</p>
+  <p>Proyecto: NodoForge · Canal: NodoCero</p>
+  <p>Correo de contacto: <a href="mailto:rodriguezvazquezj09@gmail.com">rodriguezvazquezj09@gmail.com</a></p>
+  <h3>Objeto</h3>
+  <p>Este sitio ofrece una herramienta gratuita de generación de nombres. El acceso es libre y no requiere registro.</p>
+  <h3>Propiedad intelectual</h3>
+  <p>Los contenidos, marcas, diseños y el código están protegidos. Queda prohibida su reproducción sin autorización expresa del titular.</p>
+  <h3>Responsabilidad</h3>
+  <p>El titular no se responsabiliza del uso que los usuarios hagan de los nombres generados ni de posibles conflictos con las normas de terceros.</p>
+  <h3>Enlaces externos</h3>
+  <p>Los enlaces a YouTube u otras plataformas se ofrecen como cortesía; no controlamos sus contenidos ni sus políticas.</p>
+  <h3>Independencia</h3>
+  <p><strong>NodoForge</strong> no está afiliado, asociado ni patrocinado por Garena, Free Fire ni sus filiales.</p>
+  <h3>Legislación y jurisdicción</h3>
+  <p>Este aviso legal se rige por la legislación de la República de Cuba.</p>
+  <p class="doc-meta">Última actualización: noviembre de 2026.</p>
+</div>
+
+<div id="doc-cookies" hidden data-title="Política de Cookies">
+  <h3>¿Qué son las cookies?</h3>
+  <p>Pequeños archivos que un sitio guarda en tu navegador. NodoForge actualmente no usa cookies de seguimiento.</p>
+  <h3>Qué almacenamos</h3>
+  <p>Únicamente almacenamiento técnico local (<code>localStorage</code>):</p>
+  <ul>
+    <li><code>nodoforge.theme</code> — tema oscuro o claro.</li>
+    <li><code>nodoforge.name</code> — último nombre escrito.</li>
+  </ul>
+  <h3>Cookies de terceros (futuro)</h3>
+  <p>Actualmente no hay publicidad. En el futuro, los proveedores de anuncios podrían usar cookies de terceros. Cuando eso ocurra, esta política se actualizará para detallarlo.</p>
+  <h3>Cómo eliminarlas</h3>
+  <p>Puedes borrar el almacenamiento local desde los ajustes de tu navegador. La herramienta seguirá funcionando con normalidad.</p>
+  <p class="doc-meta">Última actualización: noviembre de 2026.</p>
+</div>
+
+<div id="doc-contact" hidden data-title="Contacto">
+  <p>¿Tienes una pregunta, una idea o quieres colaborar? Estamos a un mensaje de distancia.</p>
+  <h3>Correo electrónico</h3>
+  <p><a href="mailto:rodriguezvazquezj09@gmail.com">rodriguezvazquezj09@gmail.com</a></p>
+  <h3>YouTube</h3>
+  <p><a href="https://youtube.com/@nodocero.official" target="_blank" rel="noopener noreferrer">youtube.com/@nodocero.official</a></p>
+  <h3>Desarrollador</h3>
+  <p>Jesús E. Rodríguez Vázquez — desarrollador de software de alto nivel, creador de NodoCero y NodoForge. Proyecto individual, sin equipo, hecho en Cuba.</p>
+  <h3>Tiempo de respuesta</h3>
+  <p>Solemos responder en 2–3 días laborables.</p>
+  <p class="doc-meta">Última actualización: noviembre de 2026.</p>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ==========================================================
+   0. UTILIDADES
+   ========================================================== */
+function $(sel, ctx){ return (ctx || document).querySelector(sel); }
+function $$(sel, ctx){ return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
+function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+
+/* ==========================================================
+   1. TEMA PERSISTENTE
+   ========================================================== */
+var LS_THEME = "nodoforge.theme";
+var LS_NAME  = "nodoforge.name";
+
+var root = document.documentElement;
+var metaTheme = $('meta[name="theme-color"]');
+var themeBtn = $("#themeBtn");
+
+function applyTheme(t, persist){
+  root.setAttribute("data-theme", t);
+  if (metaTheme) metaTheme.setAttribute("content", t === "dark" ? "#0b0e14" : "#eef1f8");
+  themeBtn.setAttribute("aria-label",
+    t === "dark" ? "Cambiar a tema claro" : "Cambiar a tema oscuro");
+  if (persist) lsSet(LS_THEME, t);
+}
+
+applyTheme(lsGet(LS_THEME) === "light" ? "light" : "dark", false);
+
+themeBtn.addEventListener("click", function(){
+  var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+  applyTheme(next, true);
+});
+
+/* ==========================================================
+   2. SCROLL LOCK
+   ========================================================== */
+var lockCount = 0;
+function lockScroll(){ lockCount++; document.body.classList.add("no-scroll"); }
+function unlockScroll(){ lockCount = Math.max(0, lockCount - 1); if (!lockCount) document.body.classList.remove("no-scroll"); }
+
+/* ==========================================================
+   3. DRAWER
+   ========================================================== */
+var drawer = $("#drawer");
+var drawerOverlay = $("#drawerOverlay");
+var menuBtn = $("#menuBtn");
+var closeDrawerBtn = $("#closeDrawer");
+var drawerOpen = false;
+
+function openDrawer(){
+  if (drawerOpen) return;
+  drawerOpen = true;
+  drawer.classList.add("open");
+  drawerOverlay.classList.add("open");
+  drawer.setAttribute("aria-hidden", "false");
+  menuBtn.setAttribute("aria-expanded", "true");
+  lockScroll();
+}
+function closeDrawer(){
+  if (!drawerOpen) return;
+  drawerOpen = false;
+  drawer.classList.remove("open");
+  drawerOverlay.classList.remove("open");
+  drawer.setAttribute("aria-hidden", "true");
+  menuBtn.setAttribute("aria-expanded", "false");
+  unlockScroll();
+}
+
+menuBtn.addEventListener("click", function(){
+  drawerOpen ? closeDrawer() : openDrawer();
+});
+closeDrawerBtn.addEventListener("click", closeDrawer);
+drawerOverlay.addEventListener("click", closeDrawer);
+
+$$("[data-close-drawer]").forEach(function(a){
+  a.addEventListener("click", function(){ setTimeout(closeDrawer, 60); });
+});
+
+/* ==========================================================
+   4. MODALES
+   ========================================================== */
+var modalOverlay = $("#modalOverlay");
+var modalTitle = $("#modalTitle");
+var modalBody = $("#modalBody");
+var modalClose = $("#modalClose");
+var modalOpen = false;
+var lastFocus = null;
+
+function openModal(id){
+  var doc = document.getElementById("doc-" + id);
+  if (!doc) return;
+  lastFocus = document.activeElement;
+  modalTitle.textContent = doc.getAttribute("data-title") || "Documento";
+  modalBody.innerHTML = "";
+  modalBody.scrollTop = 0;
+
+  var clone = doc.cloneNode(true);
+  clone.removeAttribute("id");
+  clone.removeAttribute("hidden");
+  clone.removeAttribute("data-title");
+  modalBody.appendChild(clone);
+
+  modalOverlay.classList.add("open");
+  modalOverlay.setAttribute("aria-hidden", "false");
+  modalOpen = true;
+  lockScroll();
+  setTimeout(function(){ modalClose.focus(); }, 50);
+}
+
+function closeModal(){
+  if (!modalOpen) return;
+  modalOverlay.classList.remove("open");
+  modalOverlay.setAttribute("aria-hidden", "true");
+  modalOpen = false;
+  unlockScroll();
+  if (lastFocus && lastFocus.focus) lastFocus.focus();
+}
+
+modalClose.addEventListener("click", closeModal);
+modalOverlay.addEventListener("click", function(e){
+  if (e.target === modalOverlay) closeModal();
+});
+
+document.addEventListener("click", function(e){
+  var trigger = e.target.closest("[data-modal]");
+  if (!trigger) return;
+  e.preventDefault();
+  if (drawerOpen) closeDrawer();
+  openModal(trigger.getAttribute("data-modal"));
+});
+
+document.addEventListener("keydown", function(e){
+  if (e.key === "Escape" || e.key === "Esc"){
+    if (modalOpen) closeModal();
+    else if (drawerOpen) closeDrawer();
+  }
+});
+
+/* ==========================================================
+   5. REVEAL ON SCROLL
+   ========================================================== */
+var reveals = $$(".reveal");
+function showReveal(el){ el.classList.add("in"); }
+
+if ("IntersectionObserver" in window){
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if (en.isIntersecting){
+        showReveal(en.target);
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.01, rootMargin: "0px 0px -20px 0px" });
+  reveals.forEach(function(el){ io.observe(el); });
+
+  setTimeout(function(){
+    reveals.forEach(function(el){
+      if (el.classList.contains("in")) return;
+      var r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight * 1.15 && r.bottom > -80) showReveal(el);
+    });
+  }, 1000);
+} else {
+  reveals.forEach(showReveal);
+}
+
+/* ==========================================================
+   6. CONTADORES ANIMADOS
+   ========================================================== */
+function animateCount(el){
+  var target = parseFloat(el.getAttribute("data-count"));
+  var suffix = el.getAttribute("data-suffix") || "";
+  if (isNaN(target)) return;
+  var dur = 1100, start = null;
+  function step(ts){
+    if (!start) start = ts;
+    var p = Math.min((ts - start) / dur, 1);
+    var eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(target * eased) + suffix;
+    if (p < 1) requestAnimationFrame(step);
+    else el.textContent = target + suffix;
+  }
+  requestAnimationFrame(step);
+}
+
+var counters = $$("[data-count]");
+if ("IntersectionObserver" in window){
+  var cio = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if (en.isIntersecting){
+        animateCount(en.target);
+        cio.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  counters.forEach(function(el){ cio.observe(el); });
+} else {
+  counters.forEach(animateCount);
+}
+
+/* ==========================================================
+   7. GENERADOR: TRANSFORMADORES
+   ========================================================== */
+var LOOK = {
+  a:"卂", b:"乃", c:"匚", d:"刀", e:"乇", f:"下", g:"ᘜ", h:"卄", i:"丨",
+  j:"ﾌ", k:"Ҝ", l:"ㄥ", m:"爪", n:"几", o:"ㄖ", p:"尸", q:"Ɋ", r:"尺",
+  s:"丂", t:"ㄒ", u:"ㄩ", v:"√", w:"山", x:"乂", y:"ㄚ", z:"乙"
+};
+function lookAlike(s){
+  var out = "";
+  for (var i = 0; i < s.length; i++){
+    var c = s[i], k = c.toLowerCase();
+    out += (LOOK[k] !== undefined ? LOOK[k] : c);
+  }
+  return out;
+}
+
+var SMALL = {
+  a:"ᴀ", b:"ʙ", c:"ᴄ", d:"ᴅ", e:"ᴇ", f:"ꜰ", g:"ɢ", h:"ʜ", i:"ɪ", j:"ᴊ",
+  k:"ᴋ", l:"ʟ", m:"ᴍ", n:"ɴ", o:"ᴏ", p:"ᴘ", q:"ǫ", r:"ʀ", s:"ꜱ", t:"ᴛ",
+  u:"ᴜ", v:"ᴠ", w:"ᴡ", x:"x", y:"ʏ", z:"ᴢ"
+};
+function smallCaps(s){
+  var out = "";
+  for (var i = 0; i < s.length; i++){
+    var c = s[i], k = c.toLowerCase();
+    out += (SMALL[k] !== undefined ? SMALL[k] : c);
+  }
+  return out;
+}
+
+function uniTransform(str, upperBase, lowerBase, digitBase, corr){
+  var out = "";
+  for (var i = 0; i < str.length; i++){
+    var ch = str[i];
+    var cp = ch.codePointAt(0);
+    var mapped = null;
+    if (corr && corr[ch] !== undefined) mapped = corr[ch];
+    else if (cp >= 65 && cp <= 90) mapped = upperBase + (cp - 65);
+    else if (cp >= 97 && cp <= 122) mapped = lowerBase + (cp - 97);
+    else if (digitBase !== null && cp >= 48 && cp <= 57) mapped = digitBase + (cp - 48);
+    out += (mapped === null ? ch : String.fromCodePoint(mapped));
+  }
+  return out;
+}
+
+var SCRIPT_CORR = {
+  "B":0x212C, "E":0x2130, "F":0x2131, "H":0x210B, "I":0x2110,
+  "L":0x2112, "M":0x2133, "R":0x211B, "e":0x212F, "g":0x210A, "o":0x2134
+};
+var FRAK_CORR = { "C":0x212D, "H":0x210C, "I":0x2111, "R":0x211C, "Z":0x2128 };
+
+function applyMark(s, mark){
+  var out = "";
+  for (var i = 0; i < s.length; i++){
+    var c = s[i];
+    out += (c === " " ? c : c + mark);
+  }
+  return out;
+}
+
+var TRANSFORMS = [
+  function(s){ return s; },
+  function(s){ return s.toUpperCase(); },
+  smallCaps,
+  lookAlike,
+  function(s){ return uniTransform(s, 0x1D400, 0x1D41A, 0x1D7CE); },
+  function(s){ return uniTransform(s, 0x1D5D4, 0x1D5EE, 0x1D7EC); },
+  function(s){ return uniTransform(s, 0x1D670, 0x1D68A, 0x1D7F6); },
+  function(s){ return uniTransform(s, 0x1D49C, 0x1D4B6, null, SCRIPT_CORR); },
+  function(s){ return uniTransform(s, 0x1D504, 0x1D51E, null, FRAK_CORR); },
+  function(s){ return uniTransform(s, 0xFF21, 0xFF41, 0xFF10); },
+  function(s){ return uniTransform(s, 0x24B6, 0x24D0, 0x245F); },
+  function(s){ return s.split("").join(" "); }
+];
+
+var MARKS = [
+  "\u0336", "\u0337", "\u0338", "\u0334",
+  "\u0332", "\u0330", "\u0335", "\u0489"
+];
+
+var DECOS = [
+  ["꧁༒","༒꧂"], ["꧁","꧂"], ["꧁༺","༻꧂"], ["亗","亗"], ["【","】"],
+  ["『","』"], ["「","」"], ["彡","彡"], ["★彡","彡★"], ["☬","☬"],
+  ["༺","༻"], ["乂","乂"], ["✿","✿"], ["★","★"], ["⚡","⚡"],
+  ["☠","☠"], ["✧","✧"], ["⫷","⫸"], ["•°","°•"], ["₪","₪"],
+  ["✞","✞"], ["〆","〆"], ["☯","☯"], ["❂","❂"], ["❖","❖"],
+  ["◈","◈"], ["ঔৣ","ঔৣ"], ["᭄","࿐"], ["▄︻デ","═══一"], ["༒","༒"],
+  ["☬༒","༒☬"], ["✧༺","༻✧"], ["〘","〙"], ["『★","★』"], ["✰","✰"], ["✵","✵"]
+];
+
+/* ==========================================================
+   8. GENERADOR: MOTOR
+   ========================================================== */
+function generate(rawName){
+  var name = String(rawName || "").replace(/[\u0000-\u001F\u007F]/g, "").trim().replace(/\s+/g, " ");
+  if (!name) return [];
+
+  var out = [];
+  var seen = Object.create(null);
+
+  function add(v){
+    if (!v) return;
+    if (seen[v]) return;
+    seen[v] = 1;
+    out.push(v);
+  }
+
+  add("꧁༒" + name + "༒꧂");
+  add(applyMark(name, "\u0336"));
+  add(applyMark(name, "\u0337"));
+  add("꧁" + name + "꧂");
+  add(applyMark(name, "\u0338"));
+  add("亗" + name + "亗");
+  add(lookAlike(name));
+  add(applyMark(name, "\u0334"));
+  add("【" + name + "】");
+  add(smallCaps(name));
+  add("彡" + name + "彡");
+  add("꧁༒" + applyMark(name, "\u0337") + "༒꧂");
+  add(uniTransform(name, 0x1D400, 0x1D41A, 0x1D7CE));
+  add("᭄" + name + "࿐");
+  add("亗" + applyMark(name, "\u0336") + "亗");
+  add("★彡" + name + "彡★");
+  add(uniTransform(name, 0x1D49C, 0x1D4B6, null, SCRIPT_CORR));
+  add("☬" + name + "☬");
+  add(applyMark(name, "\u0332"));
+
+  var T = TRANSFORMS.length;
+  for (var pass = 0; pass < 2; pass++){
+    for (var i = 0; i < DECOS.length; i++){
+      var d = DECOS[i];
+      var t = TRANSFORMS[(i + pass * 5) % T];
+      add(d[0] + t(name) + d[1]);
+    }
+  }
+
+  for (var m = 0; m < MARKS.length; m++){
+    var deco = DECOS[(m * 3) % DECOS.length];
+    add(deco[0] + applyMark(name, MARKS[m]) + deco[1]);
+  }
+
+  return out;
+}
+
+/* ==========================================================
+   9. PORTAPAPELES
+   ========================================================== */
+function copyText(text){
+  return new Promise(function(resolve){
+    if (navigator.clipboard && window.isSecureContext){
+      navigator.clipboard.writeText(text).then(
+        function(){ resolve(true); },
+        function(){ resolve(legacyCopy(text)); }
+      );
+      return;
+    }
+    resolve(legacyCopy(text));
+  });
+}
+function legacyCopy(text){
+  try{
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly","");
+    ta.style.position = "fixed";
+    ta.style.top = "-1000px";
+    ta.style.left = "-1000px";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    ta.setSelectionRange(0, ta.value.length);
+    var ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+    return ok;
+  }catch(e){ return false; }
+}
+
+/* ==========================================================
+   10. UI DEL GENERADOR
+   ========================================================== */
+var ICON_COPY  = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+var ICON_CHECK = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+
+var input      = $("#nameInput");
+var genBtn     = $("#genBtn");
+var clearBtn   = $("#clearBtn");
+var copyAllBtn = $("#copyAllBtn");
+var listEl     = $("#list");
+var emptyEl    = $("#empty");
+var countEl    = $("#countLabel");
+var toastEl    = $("#toast");
+var chipsEl    = $("#chips");
+
+var currentNames = [];
+var toastTimer = null;
+
+function showToast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ toastEl.classList.remove("show"); }, 1700);
+}
+
+function render(names){
+  currentNames = names;
+  listEl.innerHTML = "";
+  countEl.textContent = names.length + (names.length === 1 ? " nombre" : " nombres");
+
+  if (!names.length){
+    emptyEl.classList.add("show");
+    listEl.style.display = "none";
+    copyAllBtn.style.visibility = "hidden";
+    return;
+  }
+  emptyEl.classList.remove("show");
+  listEl.style.display = "";
+  copyAllBtn.style.visibility = "visible";
+
+  var frag = document.createDocumentFragment();
+  for (var i = 0; i < names.length; i++){
+    var li = document.createElement("li");
+    li.className = "item";
+    li.dataset.value = names[i];
+
+    var span = document.createElement("span");
+    span.className = "name";
+    span.textContent = names[i];
+
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "copy";
+    btn.setAttribute("aria-label", "Copiar " + names[i]);
+    btn.innerHTML = ICON_COPY;
+
+    li.appendChild(span);
+    li.appendChild(btn);
+    frag.appendChild(li);
+  }
+  listEl.appendChild(frag);
+  listEl.scrollTop = 0;
+}
+
+function doGenerate(){
+  render(generate(input.value));
+}
+
+listEl.addEventListener("click", function(e){
+  var item = e.target.closest(".item");
+  if (!item) return;
+  var value = item.dataset.value;
+  copyText(value).then(function(ok){
+    if (ok){
+      var btn = item.querySelector(".copy");
+      btn.classList.add("copied");
+      btn.innerHTML = ICON_CHECK;
+      setTimeout(function(){
+        btn.classList.remove("copied");
+        btn.innerHTML = ICON_COPY;
+      }, 1300);
+      showToast("¡Copiado!");
+    } else {
+      showToast("Mantén pulsado para copiar manualmente");
+    }
+  });
+});
+
+copyAllBtn.addEventListener("click", function(){
+  if (!currentNames.length) return;
+  copyText(currentNames.join("\n")).then(function(ok){
+    showToast(ok ? "¡" + currentNames.length + " nombres copiados!" : "No se pudo copiar");
+  });
+});
+
+genBtn.addEventListener("click", doGenerate);
+input.addEventListener("keydown", function(e){
+  if (e.key === "Enter"){
+    e.preventDefault();
+    input.blur();
+    doGenerate();
+  }
+});
+
+var typeTimer = null;
+input.addEventListener("input", function(){
+  lsSet(LS_NAME, input.value);
+  clearTimeout(typeTimer);
+  typeTimer = setTimeout(function(){
+    if (input.value.trim().length >= 2) doGenerate();
+  }, 420);
+});
+
+clearBtn.addEventListener("click", function(){
+  input.value = "";
+  lsSet(LS_NAME, "");
+  input.focus();
+  render([]);
+});
+
+chipsEl.addEventListener("click", function(e){
+  var chip = e.target.closest(".chip");
+  if (!chip) return;
+  input.value = chip.textContent.trim();
+  lsSet(LS_NAME, input.value);
+  doGenerate();
+});
+
+/* ==========================================================
+   11. ARRANQUE
+   ========================================================== */
+var savedName = lsGet(LS_NAME);
+input.value = (savedName && savedName.trim()) ? savedName : "Sniper";
+doGenerate();
+
+})();
+</script>
+</body>
+</html>
