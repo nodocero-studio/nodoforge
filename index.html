@@ -5,19 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b0e14">
 <meta name="magicads-verification" content="magicads-verify-m1jMKdHKxyVFJhx965LHWaw6WJPpqd7SL" />
-<script>
-  window.MagicAdsConfig = {
-    publisherId: 'pub_836eeba4a1d1', // Tu Publisher ID real
-    theme: 'auto'
-  };
-</script>
-<script src="https://magicads.dev/v1/magic.js" async></script>
 <meta name="description" content="NodoForge · Forjador Épico de Nombres para Free Fire. Herramienta 100% offline, sin registros, segura y gratuita. Desarrollada por Jesús E. Rodríguez Vázquez.">
 <meta name="author" content="Jesús E. Rodríguez Vázquez">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>NodoForge · Forjador Épico de Nombres · NodoCero</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M26 6 12 26h8l-2 16 16-22h-8z' fill='%23ff6a00'/%3E%3C/svg%3E">
+
+<!-- MagicAds Config & Script -->
+<script>
+  window.MagicAdsConfig = {
+    publisherId: 'pub_836eeba4a1d1',
+    theme: 'auto'
+  };
+</script>
+<script src="https://magicads.dev/v1/magic.js" async></script>
+
 <style>
 /* ============================================================
    TEMAS Y TOKENS
@@ -718,6 +721,9 @@ label.lbl{
   </div>
 </header>
 
+<!-- MAGICADS BANNER -->
+<div class="magicads" data-placement="top-banner"></div>
+
 <!-- DRAWER -->
 <div class="drawer-overlay" id="drawerOverlay"></div>
 <aside class="drawer" id="drawer" aria-hidden="true" aria-label="Menú de navegación">
@@ -1256,7 +1262,7 @@ label.lbl{
    0. UTILIDADES
    ========================================================== */
 function $(sel, ctx){ return (ctx || document).querySelector(sel); }
-function $$(sel, ctx){ return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
+function $(sel, ctx){ return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
 function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
 function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
 
@@ -1326,7 +1332,7 @@ menuBtn.addEventListener("click", function(){
 closeDrawerBtn.addEventListener("click", closeDrawer);
 drawerOverlay.addEventListener("click", closeDrawer);
 
-$$("[data-close-drawer]").forEach(function(a){
+$("[data-close-drawer]").forEach(function(a){
   a.addEventListener("click", function(){ setTimeout(closeDrawer, 60); });
 });
 
@@ -1393,7 +1399,7 @@ document.addEventListener("keydown", function(e){
 /* ==========================================================
    5. REVEAL ON SCROLL
    ========================================================== */
-var reveals = $$(".reveal");
+var reveals = $(".reveal");
 function showReveal(el){ el.classList.add("in"); }
 
 if ("IntersectionObserver" in window){
@@ -1437,7 +1443,7 @@ function animateCount(el){
   requestAnimationFrame(step);
 }
 
-var counters = $$("[data-count]");
+var counters = $("[data-count]");
 if ("IntersectionObserver" in window){
   var cio = new IntersectionObserver(function(entries){
     entries.forEach(function(en){
