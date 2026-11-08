@@ -4,8 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b0e14">
-<!-- NUEVA ETIQUETA DE VERIFICACIÓN -->
-<meta name="magicads-verification" content="magicads-verify-gOUKEX8BNT2KP1mmw81rD09-pQWV_BPR" />
+<meta name="magicads-verification" content="magicads-verify-m1jMKdHKxyVFJhx965LHWaw6WJPpqd7SL" />
 <meta name="description" content="NodoForge · Forjador Épico de Nombres para Free Fire. Herramienta 100% offline, sin registros, segura y gratuita. Desarrollada por Jesús E. Rodríguez Vázquez.">
 <meta name="author" content="Jesús E. Rodríguez Vázquez">
 <meta name="mobile-web-app-capable" content="yes">
@@ -16,7 +15,7 @@
 <!-- MagicAds Config & Script -->
 <script>
   window.MagicAdsConfig = {
-    publisherId: 'pub_afa12f14304c', /* NUEVO PUBLISHER ID */
+    publisherId: 'pub_836eeba4a1d1',
     theme: 'auto'
   };
 </script>
@@ -52,6 +51,28 @@ html[data-theme="light"]{
   --topbar:rgba(238,241,248,.86);
   --shadow:0 12px 30px rgba(20,30,60,.10);
   color-scheme: light;
+}
+
+/* ============================================================
+   ESTILOS PARA MAGIC ADS (Evita que la página se rompa)
+   ============================================================ */
+.magicads {
+  margin: 10px auto;
+  max-width: 728px;
+  width: 100%;
+  min-height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--card-2);
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+.magicads:empty {
+  display: none; /* Oculta el contenedor si el anuncio no carga o está vacío */
 }
 
 /* ============================================================
